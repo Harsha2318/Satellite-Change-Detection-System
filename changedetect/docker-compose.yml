@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # Change detection model training
+  train:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: ps10-changedetect:latest
+    container_name: ps10-train
+    volumes:
+      - ./data:/app/data
+      - ./outputs:/app/outputs
+    command: >
+      train 
+      --image_dir /app/data/images
+      --mask_dir /app/data/masks
+      --output_dir /app/outputs/models
+      --model_type siamese_unet
+      --in_channels 3
+      --batch_size 8
+      --num_epochs 100
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  # Change detection inference
+  inference:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: ps10-changedetect:latest
+    container_name: ps10-inference
+    volumes:
+      - ./data:/app/data
+      - ./outputs:/app/outputs
+    command: >
+      inference 
+      --image_dir /app/data/test_images
+      --model_path /app/outputs/models/best_model.pth
+      --output_dir /app/outputs/predictions
+      --model_type siamese_unet
+      --in_channels 3
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+              
+  # Evaluation service
+  evaluate:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: ps10-changedetect:latest
+    container_name: ps10-evaluate
+    volumes:
+      - ./data:/app/data
+      - ./outputs:/app/outputs
+    command: >
+      evaluate 
+      --pred_dir /app/outputs/predictions
+      --gt_dir /app/data/test_masks
+      --output_dir /app/outputs/evaluation
+      --vector
+    depends_on:
+      - inference
