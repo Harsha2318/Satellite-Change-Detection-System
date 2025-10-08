@@ -1,0 +1,168 @@
+# Python bytecode files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Environment and package directories
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.env
+.venv
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+profile_default/
+ipython_config.py
+
+# Data
+changedetect/data/raw/
+changedetect/data/processed/
+data/raw/
+data/processed/
+*.csv
+*.xls
+*.xlsx
+*.h5
+*.hdf5
+*.mat
+*.npz
+*.npy
+
+# Image files (selectively exclude)
+# Uncomment lines below if you don't want to include large datasets
+*.tif
+*.tiff
+*.jpg
+*.jpeg
+*.png
+*.bmp
+
+# Generated files (keep small samples for demo)
+predictions*/
+predictions_run*/
+predictions_threshold_*/
+!sample_predictions/
+
+# Model files (often large)
+*.pth
+*.pt
+*.h5
+*.pkl
+*.joblib
+*.hdf5
+*.onnx
+*.pb
+
+# Generated logs (except small samples)
+logs/
+*.log
+!changedetect/inference_log.txt
+
+# IDE / editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.pydevproject
+.spyderproject
+.spyproject
+.settings/
+
+# Virtual environment
+.env
+.venv
+venv/
+ENV/
+
+# Large visualization outputs
+visualization/
+vis_outputs/
+
+# Credentials
+.env
+.credentials
+credentials.json
+secret.json
+
+# MD5 and checksum files
+*.md5
+model_md5.txt
+17d3ba915c6ebcbad2cc45d7b0f3a6e7
+
+# Temporary files
+temp/
+tmp/
+.temp/
+.tmp/
+*.tmp
+
+# Scripts to exclude warnings
+run_without_warnings.py
+
+# Include specific model weights if needed
+# !changedetect/training_runs/run1_small/best_model.pth
+
+# Extract files
+extracted_*.txt
+extract_*.py
+*.zip
+
+# Keep specific README files
+!**/README.md
+!README.md
