@@ -1,0 +1,23 @@
+XBoson AI - PS-10 Change Detection Model Hash
+
+Company: XBoson AI
+Problem Statement: PS-10 Satellite Image Change Detection
+Model: Siamese U-Net (71M parameters)
+Hash Algorithm: MD5
+Hash Value: 17d3ba915c6ebcbad2cc45d7b0f3a6e7
+Generated: 2025-10-09 11:50:47
+
+Model Details:
+- Architecture: Siamese U-Net for change detection
+- Training Data: Satellite image pairs
+- Input Channels: 3 (RGB)
+- Output: Binary change masks + vector shapefiles
+- Framework: PyTorch
+
+File: changedetect/training_runs/run1_small/best_model.pth
+Size: 761205855 bytes
+
+This hash can be used for model verification during PS-10 evaluation.
+
+---
+XBoson AI - Advanced Geospatial Intelligence Solutions
