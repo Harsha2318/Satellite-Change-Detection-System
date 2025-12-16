@@ -1,0 +1,7 @@
+include README.md
+include LICENSE
+include requirements.txt
+recursive-include changedetect *.py
+recursive-include changedetect/docs *.md
+recursive-include changedetect/notebooks *.ipynb
+recursive-include changedetect/tests *.py

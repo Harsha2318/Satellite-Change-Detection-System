@@ -16,7 +16,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from torchvision import transforms
-from torch.utils.tensorboard import SummaryWriter
+# from torch.utils.tensorboard import SummaryWriter  # Disabled due to compatibility issues
 
 from changedetect.src.data.dataset import (
     ChangeDetectionDataset,
@@ -152,8 +152,8 @@ def train_model(
     log_dir = os.path.join(output_dir, 'logs')
     os.makedirs(log_dir, exist_ok=True)
     
-    # Initialize TensorBoard writer
-    writer = SummaryWriter(log_dir)
+    # TensorBoard logging disabled due to compatibility issues
+    writer = None
     
     # Initialize variables for tracking progress
     best_val_loss = float('inf')
@@ -266,12 +266,13 @@ def train_model(
         logger.info(f"Val IoU: {val_iou:.4f}, Val Dice: {val_dice:.4f}")
         logger.info(f"Val Precision: {val_precision:.4f}, Val Recall: {val_recall:.4f}, Val F1: {val_f1:.4f}")
         
-        # Log to TensorBoard
-        writer.add_scalar('Loss/train', train_loss, epoch)
-        writer.add_scalar('Loss/val', val_loss, epoch)
-        writer.add_scalar('Metrics/val_iou', val_iou, epoch)
-        writer.add_scalar('Metrics/val_dice', val_dice, epoch)
-        writer.add_scalar('Metrics/val_f1', val_f1, epoch)
+        # TensorBoard logging disabled
+        if writer:
+            writer.add_scalar('Loss/train', train_loss, epoch)
+            writer.add_scalar('Loss/val', val_loss, epoch)
+            writer.add_scalar('Metrics/val_iou', val_iou, epoch)
+            writer.add_scalar('Metrics/val_dice', val_dice, epoch)
+            writer.add_scalar('Metrics/val_f1', val_f1, epoch)
         
         # Save checkpoint if it's the best model so far
         if val_iou > best_val_iou:
@@ -328,8 +329,9 @@ def train_model(
     with open(history_path, 'w') as f:
         json.dump({k: [float(x) for x in v] for k, v in history.items()}, f, indent=4)
     
-    # Close TensorBoard writer
-    writer.close()
+    # Close TensorBoard writer if enabled
+    if writer:
+        writer.close()
     
     # Log total training time
     total_time = time.time() - start_time

@@ -1,0 +1,45 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.egg-info
+dist
+build
+.venv
+venv
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Data
+data/
+outputs/
+models/
+logs/
+predictions/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation
+docs/_build
+*.ipynb
+
+# Test
+.pytest_cache
+.coverage
+
+# Other
+*.log
+*.pid
+*.seed
+*.sqlite
