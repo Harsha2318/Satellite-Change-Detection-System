@@ -1,0 +1,78 @@
+{
+    "total_evaluated": 5,
+    "individual_results": [
+        {
+            "tp": 0,
+            "tn": 46035,
+            "fp": 0,
+            "fn": 19501,
+            "accuracy": 0.7024383544921875,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "iou": 0.0,
+            "dice": 0.0,
+            "image": "img_000"
+        },
+        {
+            "tp": 0,
+            "tn": 45759,
+            "fp": 0,
+            "fn": 19777,
+            "accuracy": 0.6982269287109375,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "iou": 0.0,
+            "dice": 0.0,
+            "image": "img_001"
+        },
+        {
+            "tp": 0,
+            "tn": 46042,
+            "fp": 0,
+            "fn": 19494,
+            "accuracy": 0.702545166015625,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "iou": 0.0,
+            "dice": 0.0,
+            "image": "img_002"
+        },
+        {
+            "tp": 0,
+            "tn": 45865,
+            "fp": 0,
+            "fn": 19671,
+            "accuracy": 0.6998443603515625,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "iou": 0.0,
+            "dice": 0.0,
+            "image": "img_003"
+        },
+        {
+            "tp": 0,
+            "tn": 45715,
+            "fp": 0,
+            "fn": 19821,
+            "accuracy": 0.6975555419921875,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "iou": 0.0,
+            "dice": 0.0,
+            "image": "img_004"
+        }
+    ],
+    "average_metrics": {
+        "accuracy": 0.7001220703125,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "iou": 0.0,
+        "dice": 0.0
+    }
+}
