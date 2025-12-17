@@ -1,174 +1,94 @@
 # Satellite Image Change Detection
 
-A deep learning-based project for detecting changes between satellite imagery pairs using a Siamese U-Net architecture. This system leverages convolutional neural networks to identify and map temporal changes in satellite imagery with high precision.
+Lightweight, dependency-tolerant satellite change detection system with two usage paths:
 
-## Features
+- Quick path: `simple_train.py`, `simple_inference.py`, `simple_evaluate.py` (works on Windows without heavy geospatial deps)
+- Full path: `changedetect/src/` production code (Siamese U-Net, Docker support, geospatial utilities)
 
-- **Siamese U-Net Architecture**: Dual-path encoder-decoder network for change detection
-- **Multi-spectral Support**: Handles multi-band satellite imagery (RGB, Multispectral, SAR)
-- **Batch Processing**: Efficient inference on large imagery datasets
-- **Geospatial Integration**: CRS-aware processing with coordinate system support
-- **Visualization Tools**: Change map generation and overlay visualization
-- **Docker Support**: Containerized deployment for reproducibility
+This repository contains an end-to-end pipeline for training, inference, and evaluation of pixel-wise change detection models.
 
-## Project Structure
+## Quick Start (recommended for most users)
+
+1. Prepare your data under `data/`:
 
 ```
-changedetect/
-├── src/
-│   ├── data/                   # Data handling modules
-│   │   ├── dataset.py          # Dataset creation and loading
-│   │   └── preprocess.py       # Data preprocessing utilities
-│   │
-│   ├── models/                 # Model architectures
-│   │   └── siamese_unet.py     # Siamese U-Net implementation
-│   │
-│   ├── utils/                  # Utility functions
-│   │   ├── geoutils.py         # Geospatial utilities
-│   │   ├── metrics.py          # Evaluation metrics
-│   │   └── visualization.py    # Visualization utilities
-│   │
-│   ├── train.py                # Training script
-│   ├── inference.py            # Inference script
-│   ├── evaluate.py             # Model evaluation
-│   └── main.py                 # Entry point
-│
-├── notebooks/                  # Jupyter notebooks
-│   └── change_detection_demo.ipynb
-│
-├── tests/                      # Unit tests
-│
-├── training_runs/              # Model checkpoints and logs
-│
-├── docs/                       # Documentation
-│   └── visualization.md
-│
-├── Dockerfile                  # Docker configuration
-├── docker-compose.yml          # Docker Compose setup
-├── requirements.txt            # Python dependencies
-└── README.md                   # This file
+data/
+├── train/
+│   ├── before/
+│   ├── after/
+│   └── labels/
+└── test/
+    ├── before/
+    ├── after/
+    └── labels/
 ```
 
-## Installation
+2. Train with the simple script (no heavy deps required):
 
-### Prerequisites
-- Python 3.8+
-- CUDA 11.0+ (for GPU support)
-- Git
+```powershell
+python simple_train.py
+```
 
-### Setup
+3. Run batch inference:
 
-```bash
-# Clone the repository
-git clone https://github.com/Harsha2318/Satellite-Change-Detection-System.git
-cd Satellite-Change-Detection-System
+```powershell
+python simple_inference.py batch
+```
 
-# Create conda environment
+4. Evaluate results:
+
+```powershell
+python simple_evaluate.py
+```
+
+These `simple_*` scripts use PIL + NumPy only and are the fastest way to get started on Windows.
+
+## Full/Production Path
+
+If you need geospatial features, Docker, or the full Siamese U-Net, use the `changedetect/` package:
+
+Install dependencies (recommended in a conda env):
+
+```powershell
 conda create -n changedetect python=3.9 -y
 conda activate changedetect
-
-# Install dependencies
-pip install -r changedetect/requirements.txt
+pip install -r requirements.txt
+# or: pip install -e changedetect/
 ```
 
-### Docker Setup
+Notes:
+- The `Dockerfile` and `docker-compose.yml` used for building containers are in the `changedetect/` folder. To build with Docker run:
 
-```bash
-# Build and run with Docker
-cd changedetect
-docker-compose up --build
+```powershell
+# from repository root
+docker build -t changedetect:latest changedetect/
+docker run -v ${PWD}/data:/data changedetect:latest python -m src.main train --image_dir /data/train --mask_dir /data/train/labels
 ```
 
-## Usage
+- Docker must be installed and available in PATH. On Windows, use Docker Desktop.
+- The full CLI (`python -m src.main`) may require additional geospatial packages (rasterio, scikit-image). If you see import errors, prefer the `simple_*` scripts.
 
-### Training
+## Project layout (high level)
 
-```bash
-cd changedetect
-python -m src.main train \
-  --image_dir ../data/train \
-  --mask_dir ../data/train/labels \
-  --num_epochs 100 \
-  --batch_size 16
+```
+.
+├── changedetect/            # Production package (models, full CLI, Dockerfiles)
+├── data/                    # Training / test data
+├── predictions/             # Inference outputs
+├── evaluation/              # Evaluation outputs
+├── simple_train.py          # Lightweight training script (PIL + NumPy)
+├── simple_inference.py      # Lightweight inference
+├── simple_evaluate.py       # Lightweight evaluation
+├── requirements.txt         # Optional: full project dependencies
+└── README.md
 ```
 
-### Inference
+## Troubleshooting & Notes
 
-```bash
-python -m src.main inference \
-  --image_dir ../data/test \
-  --model_path models/best_model.pth \
-  --output_dir predictions/
-```
-
-### Evaluation
-
-```bash
-python -m src.main evaluate \
-  --pred_dir predictions/ \
-  --gt_dir ../data/test/labels/ \
-  --output_dir evaluation/
-```
-
-### Interactive Demo
-
-```bash
-cd changedetect
-jupyter notebook notebooks/change_detection_demo.ipynb
-```
-
-## Model Architecture
-
-The Siamese U-Net architecture consists of:
-
-1. **Shared Encoder**: Feature extraction from both image timesteps
-2. **Skip Connections**: Multi-scale feature preservation
-3. **Decoder**: Progressive upsampling with change detection
-4. **Output Layer**: Pixel-wise change probability maps
-
-## Key Technologies
-
-- **Deep Learning**: PyTorch
-- **Geospatial**: Rasterio, GDAL, Geopandas
-- **Processing**: NumPy, Pandas, Scikit-image
-- **Visualization**: Matplotlib, Folium
-- **Containerization**: Docker, Docker Compose
-
-## Performance
-
-The model achieves strong performance on change detection tasks:
-- Precision/Recall balanced for false positive minimization
-- Handles various temporal scales
-- Robust to illumination and seasonal variations
-
-## Citation
-
-If you use this project in your research, please cite:
-
-```bibtex
-@software{changedetection2024,
-  title={Satellite Image Change Detection System},
-  author={Harsha},
-  url={https://github.com/Harsha2318/Satellite-Change-Detection-System},
-  year={2024}
-}
-```
+- If `docker build` fails with "no such file or directory", ensure you run the build from the repository root and use the `changedetect/` path (see command above).
+- If `python -m src.main ...` raises import errors for `skimage` or `rasterio`, install the packages or use `simple_*` scripts instead.
+- For Windows emoji/unicode issues the CLI uses plain ASCII output.
 
 ## License
 
-MIT License - see LICENSE file for details
-
-## Contributing
-
-Contributions are welcome! Please follow the standard GitHub workflow for PRs.
-
-## Support
-
-For issues, questions, or suggestions, please open an issue on GitHub.
-
-## Acknowledgements
-
-Built with PyTorch, Rasterio, and the open-source geospatial community.
-
-- [U-Net Architecture](https://arxiv.org/abs/1505.04597)
-- [Siamese Networks for Change Detection](https://ieeexplore.ieee.org/document/8451652)
+MIT

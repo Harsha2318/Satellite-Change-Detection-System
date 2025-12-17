@@ -4,6 +4,25 @@
 
 This project implements a deep learning-based system for detecting changes in satellite imagery using a Siamese U-Net architecture. It supports multi-spectral satellite data and includes end-to-end workflows for training, inference, and evaluation.
 
+## Quick Start (Lightweight)
+
+If you're on Windows or want to avoid installing heavy geospatial dependencies, use the lightweight scripts at repository root:
+
+```powershell
+# Train
+python simple_train.py
+
+# Inference (batch)
+python simple_inference.py batch
+
+# Evaluate
+python simple_evaluate.py
+```
+
+These scripts use `Pillow` and `NumPy` only and are the recommended way to try the system quickly.
+
+> Note: The full CLI under `changedetect/src/` provides more features (rasterio, skimage, Docker), but may require extra packages on Windows.
+
 ## System Architecture
 
 ### 1. Model Architecture: Siamese U-Net

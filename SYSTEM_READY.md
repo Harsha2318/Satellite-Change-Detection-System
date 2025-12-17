@@ -176,6 +176,14 @@ cd changedetect
 python -m src.main train --image_dir ../data/train --mask_dir ../data/train/labels
 ```
 
+**Docker note:** The `Dockerfile` and `docker-compose.yml` for building containers are located in the `changedetect/` directory. To build from the repository root use:
+
+```powershell
+docker build -t changedetect:latest changedetect/
+```
+
+Make sure Docker Desktop is installed and running on Windows before attempting container builds.
+
 ---
 
 ## Performance Tips

@@ -2,18 +2,25 @@
 
 ## Installation
 
-```bash
+```powershell
 git clone https://github.com/Harsha2318/Satellite-Change-Detection-System.git
 cd Satellite-Change-Detection-System
 conda create -n changedetect python=3.9 -y
 conda activate changedetect
+# For full/production features (geospatial libs)
+pip install -r requirements.txt
+# Or (editable install for development):
 pip install -e changedetect/
 ```
 
 ## Basic Commands
 
 ### Training
-```bash
+```powershell
+# Quick (recommended on Windows): run the lightweight script from repository root
+python simple_train.py
+
+# Full/production (requires dependencies):
 cd changedetect
 python -m src.main train \
   --image_dir /path/to/images \
@@ -24,7 +31,11 @@ python -m src.main train \
 ```
 
 ### Inference
-```bash
+```powershell
+# Quick (recommended):
+python simple_inference.py batch
+
+# Full/production:
 python -m src.main inference \
   --image_dir /path/to/test/images \
   --model_path models/best_model.pth \
@@ -58,17 +69,17 @@ data/
 
 ## Docker
 
-```bash
-# Build
+```powershell
+# Docker: Dockerfile is located inside the `changedetect/` folder. Example:
 docker build -t changedetect:latest changedetect/
 
-# Run
-docker run -v $(pwd)/data:/data changedetect:latest \
+# Run (mount data directory):
+docker run -v ${PWD}/data:/data changedetect:latest \
   python -m src.main train --image_dir /data/train --mask_dir /data/train/labels --output_dir /data/models
 
-# Docker Compose
+# Docker Compose (from changedetect/)
 cd changedetect
-docker-compose up train
+docker-compose up --build
 ```
 
 ## Configuration
