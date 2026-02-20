@@ -1,58 +1,40 @@
 # Satellite Change Detection System
 
-Recommended runtime: lightweight baseline CLI.
+Official runtime path: `simple_main.py` (lightweight baseline pipeline).
 
-This repository now has one official beginner-friendly execution path that runs end-to-end with minimal dependencies:
+This project supports a complete end-to-end flow:
 
-- prepare sample dataset
-- train model
-- run inference
-- run evaluation
+- dataset preparation (sample or real)
+- training
+- inference
+- evaluation
 
-## Recommended way to run the project
+## Requirements
 
-Use `simple_main.py`.
+- Python 3.10+
+- Recommended: virtual environment
 
-## Python version
-
-Use Python 3.10 to 3.12 (also works with newer versions if `numpy` and `Pillow` wheels are available).
-
-## Install
+Install base dependencies:
 
 ```powershell
 python -m pip install -r requirements.txt
 ```
 
-## Quick Start (fully working)
+## Full Pipeline (your dataset already available)
 
-### Option A: One-command end-to-end run
-
-```powershell
-python simple_main.py run-all
-```
-
-This generates sample data, trains a baseline model, runs inference, and evaluates results.
-
-### Option B: Step-by-step
+If your dataset is already present in `data/`, run everything with one command:
 
 ```powershell
-python simple_main.py prepare-sample
-python simple_main.py train
-python simple_main.py infer
-python simple_main.py evaluate
+python simple_main.py run-all-real --data-dir data
 ```
 
-## Outputs
+Use strict filename validation when needed:
 
-After running, you will have:
+```powershell
+python simple_main.py run-all-real --data-dir data --strict
+```
 
-- Trained model: `outputs/models/baseline_model.json`
-- Prediction masks and probability maps: `outputs/predictions/`
-- Metrics JSON: `outputs/evaluation/evaluation_results.json`
-
-## Using your own dataset
-
-Expected structure:
+## Expected Dataset Layout
 
 ```text
 data/
@@ -66,48 +48,67 @@ data/
     └── labels/
 ```
 
-Image names must match across `before`, `after`, and `labels` within each split.
+File names should align across `before`, `after`, and `labels` within each split.
 
-Then run:
+## Real Dataset Download (optional)
 
-```powershell
-python simple_main.py run-all-real --data-dir data
-```
-
-If your folders are not perfectly aligned and you still want to run on overlapping filenames only, keep default non-strict mode. To enforce exact matching, add `--strict`.
-
-### Download real dataset (LEVIR-CD+) and run fully
-
-If you want the project to fetch and export the Hugging Face dataset first:
+If you want the CLI to download/export LEVIR-CD+ first:
 
 ```powershell
 python -m pip install datasets
 python simple_main.py run-all-real --download --data-dir data
 ```
 
-Or only export dataset files:
+Only download/export the real dataset (without train/infer/eval):
 
 ```powershell
 python simple_main.py prepare-real --data-dir data
 ```
 
-## Optional advanced path
+## Sample Dataset Pipeline
 
-The `changedetect/src/` stack is kept for advanced geospatial/deep-learning experiments and is not the default supported path.
+Run fully on generated synthetic data:
 
-If you need it, install:
+```powershell
+python simple_main.py run-all
+```
+
+Or step-by-step:
+
+```powershell
+python simple_main.py prepare-sample
+python simple_main.py train
+python simple_main.py infer
+python simple_main.py evaluate
+```
+
+## Outputs
+
+Default output locations:
+
+- Model: `outputs/models/baseline_model.json`
+- Predictions: `outputs/predictions/`
+- Evaluation JSON: `outputs/evaluation/evaluation_results.json`
+
+## Command Summary
+
+- `prepare-sample` – generate synthetic train/test data
+- `train` – train threshold baseline model
+- `infer` – run predictions on test split
+- `evaluate` – compute metrics from predictions vs labels
+- `prepare-real` – download/export LEVIR-CD+
+- `run-all` – full sample-data pipeline
+- `run-all-real` – full real-data pipeline
+
+## Optional Advanced Stack
+
+The `changedetect/src/` workflow remains available for advanced experimentation.
+
+Install full dependencies:
 
 ```powershell
 python -m pip install -r requirements-full.txt
 ```
-
-## Backward compatibility
-
-Legacy scripts are still present and redirect to the recommended CLI:
-
-- `simple_train.py`
-- `simple_inference.py`
-- `simple_evaluate.py`
 
 ## License
 
