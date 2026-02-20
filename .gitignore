@@ -73,40 +73,23 @@ changedetect/data/raw/
 changedetect/data/processed/
 data/raw/
 data/processed/
-ps10_predictions/
-ps10_predictions_formatted/
+data/train/
+data/test/
+data/val/
 outputs/
+artifacts/
 visualizations/
-*.csv
-*.xls
-*.xlsx
 *.h5
 *.hdf5
 *.mat
 *.npz
 *.npy
-*.tif
-*.tiff
-*.jpg
-*.jpeg
-*.png
-*.bmp
-
-# Image files (selectively exclude)
-# Uncomment lines below if you don't want to include large datasets
-*.tif
-*.tiff
-*.jpg
-*.jpeg
-*.png
-*.bmp
 
 
-# Generated files (keep small samples for demo)
+# Generated files
 predictions*/
 predictions_run*/
 predictions_threshold_*/
-!sample_predictions/
 
 
 # Model files (often large)
@@ -114,18 +97,15 @@ model/
 models/
 *.pth
 *.pt
-*.h5
 *.pkl
 *.joblib
-*.hdf5
 *.onnx
 *.pb
 
 
-# Generated logs (except small samples)
+# Generated logs
 logs/
 *.log
-!changedetect/inference_log.txt
 
 # IDE / editor files
 .idea/
@@ -161,7 +141,6 @@ secret.json
 # MD5 and checksum files
 *.md5
 model_md5.txt
-17d3ba915c6ebcbad2cc45d7b0f3a6e7
 
 
 # Temporary files
@@ -172,34 +151,5 @@ tmp/
 *.tmp
 
 
-# Ignore emergency/fast scripts
-run_without_warnings.py
-fast_submit.py
-emergency_submission.py
-quick_final_submission.py
-# Ignore test and temp scripts
-test_*.py
-*_test.py
-# Submission folders and zips
-PS10_*/
-PS10_*_SUBMISSION/
-PS10_*_XBosonAI*/
-PS10_31-10-2025_XBosonAI_FINAL.zip
-PS10_31-10-2025_XBosonAI.zip
-PS10_FINAL_SUBMIT.zip
-# Ignore any other temp files
-*.swp
-*.swo
-*~
-
-# Include specific model weights if needed
-# !changedetect/training_runs/run1_small/best_model.pth
-
-# Extract files
-extracted_*.txt
-extract_*.py
+# Archives
 *.zip
-
-# Keep specific README files
-!**/README.md
-!README.md

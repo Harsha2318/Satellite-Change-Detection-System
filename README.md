@@ -1,17 +1,60 @@
-# Satellite Image Change Detection
+# Satellite Change Detection System
 
-Lightweight, dependency-tolerant satellite change detection system with two usage paths:
+Recommended runtime: lightweight baseline CLI.
 
-- Quick path: `simple_train.py`, `simple_inference.py`, `simple_evaluate.py` (works on Windows without heavy geospatial deps)
-- Full path: `changedetect/src/` production code (Siamese U-Net, Docker support, geospatial utilities)
+This repository now has one official beginner-friendly execution path that runs end-to-end with minimal dependencies:
 
-This repository contains an end-to-end pipeline for training, inference, and evaluation of pixel-wise change detection models.
+- prepare sample dataset
+- train model
+- run inference
+- run evaluation
 
-## Quick Start (recommended for most users)
+## Recommended way to run the project
 
-1. Prepare your data under `data/`:
+Use `simple_main.py`.
 
+## Python version
+
+Use Python 3.10 to 3.12 (also works with newer versions if `numpy` and `Pillow` wheels are available).
+
+## Install
+
+```powershell
+python -m pip install -r requirements.txt
 ```
+
+## Quick Start (fully working)
+
+### Option A: One-command end-to-end run
+
+```powershell
+python simple_main.py run-all
+```
+
+This generates sample data, trains a baseline model, runs inference, and evaluates results.
+
+### Option B: Step-by-step
+
+```powershell
+python simple_main.py prepare-sample
+python simple_main.py train
+python simple_main.py infer
+python simple_main.py evaluate
+```
+
+## Outputs
+
+After running, you will have:
+
+- Trained model: `outputs/models/baseline_model.json`
+- Prediction masks and probability maps: `outputs/predictions/`
+- Metrics JSON: `outputs/evaluation/evaluation_results.json`
+
+## Using your own dataset
+
+Expected structure:
+
+```text
 data/
 ├── train/
 │   ├── before/
@@ -23,71 +66,48 @@ data/
     └── labels/
 ```
 
-2. Train with the simple script (no heavy deps required):
+Image names must match across `before`, `after`, and `labels` within each split.
+
+Then run:
 
 ```powershell
-python simple_train.py
+python simple_main.py run-all-real --data-dir data
 ```
 
-3. Run batch inference:
+If your folders are not perfectly aligned and you still want to run on overlapping filenames only, keep default non-strict mode. To enforce exact matching, add `--strict`.
+
+### Download real dataset (LEVIR-CD+) and run fully
+
+If you want the project to fetch and export the Hugging Face dataset first:
 
 ```powershell
-python simple_inference.py batch
+python -m pip install datasets
+python simple_main.py run-all-real --download --data-dir data
 ```
 
-4. Evaluate results:
+Or only export dataset files:
 
 ```powershell
-python simple_evaluate.py
+python simple_main.py prepare-real --data-dir data
 ```
 
-These `simple_*` scripts use PIL + NumPy only and are the fastest way to get started on Windows.
+## Optional advanced path
 
-## Full/Production Path
+The `changedetect/src/` stack is kept for advanced geospatial/deep-learning experiments and is not the default supported path.
 
-If you need geospatial features, Docker, or the full Siamese U-Net, use the `changedetect/` package:
-
-Install dependencies (recommended in a conda env):
+If you need it, install:
 
 ```powershell
-conda create -n changedetect python=3.9 -y
-conda activate changedetect
-pip install -r requirements.txt
-# or: pip install -e changedetect/
+python -m pip install -r requirements-full.txt
 ```
 
-Notes:
-- The `Dockerfile` and `docker-compose.yml` used for building containers are in the `changedetect/` folder. To build with Docker run:
+## Backward compatibility
 
-```powershell
-# from repository root
-docker build -t changedetect:latest changedetect/
-docker run -v ${PWD}/data:/data changedetect:latest python -m src.main train --image_dir /data/train --mask_dir /data/train/labels
-```
+Legacy scripts are still present and redirect to the recommended CLI:
 
-- Docker must be installed and available in PATH. On Windows, use Docker Desktop.
-- The full CLI (`python -m src.main`) may require additional geospatial packages (rasterio, scikit-image). If you see import errors, prefer the `simple_*` scripts.
-
-## Project layout (high level)
-
-```
-.
-├── changedetect/            # Production package (models, full CLI, Dockerfiles)
-├── data/                    # Training / test data
-├── predictions/             # Inference outputs
-├── evaluation/              # Evaluation outputs
-├── simple_train.py          # Lightweight training script (PIL + NumPy)
-├── simple_inference.py      # Lightweight inference
-├── simple_evaluate.py       # Lightweight evaluation
-├── requirements.txt         # Optional: full project dependencies
-└── README.md
-```
-
-## Troubleshooting & Notes
-
-- If `docker build` fails with "no such file or directory", ensure you run the build from the repository root and use the `changedetect/` path (see command above).
-- If `python -m src.main ...` raises import errors for `skimage` or `rasterio`, install the packages or use `simple_*` scripts instead.
-- For Windows emoji/unicode issues the CLI uses plain ASCII output.
+- `simple_train.py`
+- `simple_inference.py`
+- `simple_evaluate.py`
 
 ## License
 
